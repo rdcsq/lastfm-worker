@@ -28,7 +28,13 @@ type LastFmGetRecentTracks = {
 export async function getLastPlayed(user: string, apiKey: string): Promise<NowPlayingResponse | null> {
   try {
     const req = await fetch(
-      `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${apiKey}&format=json&limit=1`
+      `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${apiKey}&format=json&limit=1`,
+      {
+        cf: {
+            cacheTtl: 30,
+            cacheEverything: true,    
+        }
+      }
     );
     const data: LastFmGetRecentTracks = await req.json();
     if (!req.ok) {
